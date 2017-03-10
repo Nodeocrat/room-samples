@@ -7,19 +7,27 @@ Then go on to say
 
 With experience in banking software and big-data, real-time analytics software and a number of personal projects, I have solid experience of working with different types of software in different programming languages on both a macro and micro scale across the full stack and software lifecycle. I have worked with plenty of well designed and badly designed software so have a thorough appreciation of the importance of good software design and the trade-offs between complexity, time constraints and future maintenance/enhancements. Also being from a heavy maths background, algorithms and cunning solutions to difficult problems are one of my specialties.
 
+#technologies I am proficient with:
+Node.js, JavaScript (ES-2016), C++, MongoDB, Linux, AWS, HTML + CSS + Bootstrap, Nginx, Express.js, Npm, Git.
+
+#other technologies i have worked with (at an intermediate level):
+Java, Dart, PostgreSQL/SQL, AngularJS 2.0, React.js (currently learning)
+
 #looking for
-I am looking for contract work around London. The technologies/programming languages I have worked with and consider myself to be proficient in are: Node.js, JavaScript (ES6), C++, Java, Dart, MongoDB, PostgreSQL/SQL, Linux, AWS, HTML + CSS + Bootstrap, Nginx, Express.js, Npm, Git. I have also used Angular, and am currently learning ReactJS. 
+I am currently looking for contract work around London.
+[STATE TECHNOLOGIES I AM PROFICIENT/INTERMEDIATE WITH]
 
 
 NOTE: Make brief summary for each too, and date worked there for the 'thumbnail', and provide a dropdown with ReactJS.
 
 #Job/experience
 #Software Developer at Ancoa
-Ancoa provides a platform which detects anomalies and suspicious behaviour in securities markets such as stock markets. It could handle big-data in real-time, as some clients could have tens of millions of data entries streaming through per day. I contributed to all area's of the system; data-handling, development of algorithms to detect suspicious behaviour, data-integration, database management, desktop and web front-end, improvement of the build-system on Linux, Ancoa's APIs for clients, and some client-facing tasks and attendance of fintech events.
-Key technologies used: C++, Qt framework, Dart, AngularDart [has many similarities to both angularJS 1 and 2], Linux, Git, PostgreSQL.
+***brief:*** February 2015 - May 2016; full-stackMarket-surveillance
+***Key technologies used:*** C++, Qt framework, Dart, AngularDart [has many similarities to both angularJS 1 and 2], Linux, Git, PostgreSQL.
+***description:*** Ancoa provides a platform which detects anomalies and suspicious behaviour in securities markets such as stock markets. It could handle big-data in real-time, as some clients could have tens of millions of data entries streaming through per day. I contributed to all area's of the system; data-handling, development of algorithms to detect suspicious behaviour, data-integration, database management, desktop and web front-end, improvement of the build-system on Linux, Ancoa's APIs for clients, and some client-facing tasks and attendance of fintech events.
 
 #Graduate Developer at Sword APAK
-Position involves working closely with Business Analysts to enhance and develop features for the Aurius banking system; a banking system used by smaller banks which combines all systems of traditional banking platforms into one agile system.
+Position involved working closely with Business Analysts to enhance and develop features for the Aurius banking system; a banking system used by smaller banks which combines all systems of traditional banking platforms into one agile system.
 Key technologies used: C++, .NET framework, SQL Server.
 
 #Final year dissertation software (nodeocrat.com/blog/apalg)
