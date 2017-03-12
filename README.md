@@ -8,7 +8,7 @@ Then go on to say
 With experience in banking software and big-data, real-time analytics software and a number of personal projects, I have solid experience of working with different types of software in different programming languages on both a macro and micro scale across the full stack and software lifecycle. I have worked with plenty of well designed and badly designed software so have a thorough appreciation of the importance of good software design and the trade-offs between complexity, time constraints and future maintenance/enhancements. Also being from a heavy maths background, algorithms and cunning solutions to difficult problems are one of my specialties.
 
 #technologies I am proficient with:
-Node.js, JavaScript (ES-2016), C++, MongoDB, Linux, AWS, HTML + CSS + Bootstrap, Nginx, Express.js, Npm, Git.
+Node.js, JavaScript (ES-2016), C++, MongoDB, Linux, AWS, HTML + CSS + Bootstrap, Nginx, Express.js, Npm, Git and various APIs including Google, Facebook and Stripe. 
 
 #other technologies i have worked with (at an intermediate level):
 Java, Dart, PostgreSQL/SQL, AngularJS 2.0, React.js (currently learning)
