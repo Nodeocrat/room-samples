@@ -63,7 +63,8 @@ wss.on('connection', (rawWs, req) => {
     }
 
     console.log(`New websocket connection request from session ID ${sid}`);
-    let client = ClientPool.getClient(sid);
+    const clientInfo = ClientPool.getClient(sid);
+    let client = clientInfo && clientInfo.client;
     if(!client){
       console.log(`Server is not expecting a websocket connection request from ${sid}`);
       return ws.terminate();
