@@ -19,7 +19,7 @@ class TestRoom {
   }
 }
 
-document.cookie = encodeURIComponent(`sid=${randomStr()}; `);
+document.cookie = `sid=${encodeURIComponent(randomStr())}; `;
 const testRoom = new TestRoom();
 testRoom.join()
   .then(() => testRoom.sendMsg(`Hi. I just joined the room at ${new Date()}`))
