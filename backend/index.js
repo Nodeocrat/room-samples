@@ -45,7 +45,7 @@ app.post('/testroom', (req, res, next) => {
   const sid = req.cookies.sid;
   console.log(`sid: ${sid}`);
   const result = testRoom.join(sid, {id: sid});
-  result.wsUrl = '/api/';
+  result.url = '/api/';
   res.json({...result});
   next();
 });
