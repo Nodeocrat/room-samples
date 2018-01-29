@@ -1,42 +1,27 @@
-# temp-repo
+# SERVER
 
-# summary: Give quick summary, technologies I work with, experience I( have.
-Then go on to say
+## constructor
+initTimeout: time in milliseconds for client to notify initialization
+  complete (via initialize() on client) before being kicked. (default 10 sec)
+  If 0 is passed, then initClient will be called straight away and will not wait
+  for the client to invoke initialized(). This is faster and useful for if there
+  is no initial data that needs to be sent to the client.
+reconnectTimeout: time in milliseconds that clients have to reconnect upon disconnect. If
+  ${timeout} seconds passes without reconnecting, client will be booted from room.
+  (default 0ms). If it set to be non-zero, then you will be on 'reconnect' mode
+  and must override onDisconnect and onReconnect
+  
+## onClientAccepted: When client is accepted & expected to join shortly, but not yet initialized
 
-#About me
+## onClientDisconnect: When client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
 
-With experience in banking software and big-data, real-time analytics software and a number of personal projects, I have solid experience of working with different types of software in different programming languages on both a macro and micro scale across the full stack and software lifecycle. I have worked with plenty of well designed and badly designed software so have a thorough appreciation of the importance of good software design and the trade-offs between complexity, time constraints and future maintenance/enhancements. Also being from a heavy maths background, algorithms and cunning solutions to difficult problems are one of my specialties.
+## onClientReconnect: When client reconnects, after being disconnected. As above, you only need to override this if reconnectTimeout is non-zero.
 
-#technologies I am proficient with:
-Node.js, JavaScript (ES-2016), C++, MongoDB, Linux, AWS, HTML + CSS + Bootstrap, Nginx, Express.js, Passport, Npm, Git, Mocha and various APIs including Google, Facebook and Stripe. 
+## initClient: Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required) along with an event to tell user the server is also initialized, such as in a game. But note, when at this point, the user is already receiving the rooms events, but cannot emit anything yet. Whether or not you want the user to react to those events or wait for initial startup data and a startup signal is a choice to be made by you!
 
-#other technologies i have worked with (at an intermediate level):
-Java, Dart, PostgreSQL/SQL, AngularJS 2.0, React.js (currently learning)
+## onClientLeave: When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
 
-#looking for
-I am currently looking for contract work around London.
-[State here the technologies i am proficient/intermediate in]
+## onJoinRequest: (Do not call super) Return true if permission granted to join, false otherwise. If not overidden, permission is always granted
 
-#Job/experience
-#Software Developer at Ancoa
-**brief:** February 2015 - May 2016; full-stack development of a Market-surveillance platform
-**Key technologies used:** C++, Qt framework, Dart, AngularDart [has many similarities to both angularJS 1 and 2], Linux, Git, PostgreSQL.
-**description:** Ancoa provides a platform which detects anomalies and suspicious behaviour in securities markets such as stock markets. It could handle big-data in real-time, as some clients could have tens of millions of data entries streaming through per day. I contributed to all area's of the system; data-handling, development of algorithms to detect suspicious behaviour, data-integration, database management, desktop and web front-end, improvement of the build-system on Linux, Ancoa's APIs for clients, and some client-facing tasks and attendance of fintech events.
 
-#Graduate Developer at Sword APAK
-**Brief:** July 2014 - February 2015; full-stack development, banking software
-**key technologies used:** C++, .NET framework, SQL Server
-**description:** Position involved working closely with Business Analysts to enhance and develop features for the Aurius banking system; a banking system used by smaller banks which combines all systems of traditional banking platforms into one agile system.
-
-#Final year dissertation software (nodeocrat.com/blog/apalg)
-**Brief:** Demonstrates various Graph Theory algorithms written in Java, on self-drawn or auto-generated graphs.
-**info:** This project was made from scratch without using any external libraries. It is was re-written shortly after my degree to conform to new software-design practices I had learnt as a graduate developer. Visit the given URL for an excerpt of the relevant part of my final year project, a download of the software (a JAR file) itself, and a link to the Github repository.
-
-#Loopless game-server (nodeocrat.com/blog/shootyballs)
-**brief:** An experimental online multiplayer game to test an idea of a loopless game-server.
-**info:** Visit the URL for a more in depth explanation.
-
-#Personal website (this site)
-**Brief:** Site to further practice various modern web technologies and put them into production.
-**info:** Hosted on Ubuntu 16.04 Server, on AWS. The backend is built with node.js, express.js, mongoDB and uses a range of popular npm packages including passport for authentication, socket.io, bcrypt for salted-hashing locally stored passwords, helmet for a number of security measures and mongoose for schema design. Facebook and google-login is also supported. The web-server sits behind nginx, which serves static files via http/2 if the browser supports it which avoids the complexities and inefficiencies from having to bundle large client-side apps. It is secured using a free SSL certificate generated by Letsencrypt. It recently gone live so is lacking content; that should change rapidly over the next 1-2 weeks.
-**mention mobile ready too**
+# CLIENT

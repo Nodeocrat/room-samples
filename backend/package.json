@@ -12,6 +12,6 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "ws": "^3.2.0",
-    "server-room": "~/dev/ws-room/server-room"
+    "server-room": "git+https://github.com/Nodeocrat/server-room.git"
   }
 }

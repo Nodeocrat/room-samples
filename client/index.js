@@ -1,4 +1,4 @@
-import ClientRoom from './node_modules/client-room/index.js';
+import {ClientRoom} from './node_modules/client-room/index.js';
 import randomStr from './random-string.js';
 
 class TestRoom {
