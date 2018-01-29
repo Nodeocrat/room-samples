@@ -3,7 +3,7 @@
 
 This class represents a WebSocket server. It extends the `EventEmitter`.
 
-### new Room(options)
+#### new Room(options)
 - `options` {Object}
   - `initTimeout` {Number} Milliseconds for client to notify initialization is complete (via initialize() on client) before being kicked. Defaults to 10 seconds. If 0 is passed, then initClient will be called straight away and will not wait for the client to invoke initialized(). This is faster and useful for if there is no initial data that needs to be sent to the client.
   - `reconnectTimeout` {String} Time in milliseconds that clients have to reconnect upon disconnect. If ${timeout} seconds passes without reconnecting, client will be booted from room. (default 0ms). If it set to be non-zero, then you will be on 'reconnect' mode and must override onDisconnect and onReconnect
