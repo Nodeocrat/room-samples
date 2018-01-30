@@ -25,7 +25,7 @@ When client reconnects, after being disconnected. As above, you only need to ove
 
 ### Hook: Room.initClient(client)
 - `client` {Client}
-Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: when this is called it can be assumed the client is already receiving the rooms events, but cannot emit anything yet. Whether or not you want the user to react to those events or wait for initial startup data and a startup signal is a choice to be made by you!
+Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
 
 ### Hook: Room.onClientLeave(client)
 - `client` {Client}
@@ -100,3 +100,8 @@ Causes client to leave all rooms it is currently in.
 
 
 # CLIENT
+
+
+
+
+Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user.
