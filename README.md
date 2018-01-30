@@ -27,11 +27,6 @@ Returns true if `client` is connected
 
 Returns the `client` with the clients SID equal to `sid`.
 
-### Room.join(userInfo)
-- `userInfo` {Object}  
-
-Attempts to create a new `Client` object. Either a property `sid` (a session ID string) or a property `cookie` must be set. If `cookie` is set, this must be a valid cookie string from which the session ID can be extracted, and `sidHeader` must have been set in `initialize(options)`.
-
 ### Room.leave(client)
 - `client` {Client}  
 
@@ -60,11 +55,16 @@ Emits `event` to `client` with optional `payload`.
 
 Adds the event listener `listener` to client `client` for event `event`.
 
+### Room.join(userInfo)
+- `userInfo` {Object} Contains info about the user wishing to join. Either a property `sid` (a session ID string) or a property `cookie` must be set. If `cookie` is set, this must be a valid cookie string from which the session ID can be extracted, and `sidHeader` must have been set in `initialize(options)`.
+
+Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and `onClientAccepted(client)` (if `onJoinRequest` returns true) before returning. Returns an object: `{success: {Boolean}, reason: {String} }`. success will be `true` if onJoinRequest returned `true` and the SID given is not already found to be in the room. Otherwise returns success: `false` with a `reason` property set, 
+
 ### Hook: Room.onJoinRequest(client, userInfo)
 - `client` {Client}  
 - `useInfo` {Object} same object given to `Room.join`
-
-Return true if permission granted to join, false otherwise. If not overidden, permission is always granted. Do not call super when using this hook.
+.
+Return `{success: true}` if you want the user with `userInfo` to join. If not overidden, permission is always granted to join. Do not call super when using this hook. If `true` is returned, the `Room.onClientAccepted` hook below, will be triggered. Return an optional `reason` property if you wish to specify a reason why the user has not been accepted (with `success: false`)
 
 ### Hook: Room.onClientAccepted(client) 
 - `client` {Client}  
