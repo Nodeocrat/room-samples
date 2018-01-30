@@ -127,16 +127,16 @@ Created a new ClientRoom object, which is designed to be the client-side counter
 ### ClientRoom.id
 Returns the ID of the room.
 
-### ClientRoom.on(event, listener)
-- `event` {String} An event fired from the corresponding server-side Room.
-- `listener` {Function} Event listener
-
-Registers `listener` with `event`.
-
 ### ClientRoom.join(url)
 - `url` {String} The url of the room you wish to join.
 
 Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this.
+
+### ClientRoom.on(event, listener)
+- `event` {String} An event fired from the corresponding server-side Room.
+- `listener` {Function} Event listener
+
+Registers `listener` with `event`, which will be called when `event` is fired from the corresponding `Room` on the server.
 
 ### ClientRoom.initialized()
 Call this to notify the server you have fully initialized, with all relevant event listeners and anything else set up. This must be called after the `ClientRoom.join(url)` Promise has resolved with `{success: true}`.
