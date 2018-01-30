@@ -133,21 +133,21 @@ Returns the ID of the room.
 
 Registers `listener` with `event`.
 
-### join(url)
+### ClientRoom.join(url)
 - `url` {String} The url of the room you wish to join.
 
 Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this.
 
-### initialized()
+### ClientRoom.initialized()
 Call this to notify the server you have fully initialized, with all relevant event listeners and anything else set up. This must be called after the `ClientRoom.join(url)` Promise has resolved with `{success: true}`.
 
-### emit(event[, payload])
+### ClientRoom.emit(event[, payload])
 - event {String}
 - payload {Object, String, Boolean, Array, Number} (optional)
 
 Emits `event` with `payload` to corresponding room on server.
 
-### leave()
+### ClientRoom.leave()
 
 Causes the client to leave the room.
 
