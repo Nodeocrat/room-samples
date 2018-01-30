@@ -8,28 +8,8 @@ This class represents a room of clients. This is intended to be extended.
 
 ### new Room(options)
 - `options` {Object}
-  - `initTimeout` {Number} Milliseconds for client to notify initialization is complete (via initialize() on client) before being kicked. Defaults to 10 seconds. If 0 is passed, then initClient will be called straight away and will not wait for the client to invoke initialized(). This is faster and useful for if there is no initial data that needs to be sent to the client.
-  - `reconnectTimeout` {String} Time in milliseconds that clients have to reconnect upon disconnect. If ${timeout} seconds passes without reconnecting, client will be booted from room. (default 0ms). If it set to be non-zero, then you will be on 'reconnect' mode and must override onDisconnect and onReconnect
-
-### Hook: Room.onClientAccepted(client) 
-- `client` {Client}
-Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
-
-### Hook: Room.onClientDisconnect(client)
-- `client` {Client}
-Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
-
-### Hook: Room.onClientReconnect(client)
-- `client` {Client}
-When client reconnects, after being disconnected. As above, you only need to override this if reconnectTimeout is non-zero.
-
-### Hook: Room.initClient(client)
-- `client` {Client}
-Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
-
-### Hook: Room.onClientLeave(client)
-- `client` {Client}
-When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
+  - `initTimeout` {Number} Milliseconds for client to notify initialization is complete (via `initialized()` on client) before being kicked. Defaults to 10 seconds. If 0 is passed, then initClient will be called straight away and will not wait for the client to invoke `initialized()`. This is faster and useful for if there is no initial data that needs to be sent to the client.
+  - `reconnectTimeout` {String} Time in milliseconds that clients have to reconnect upon disconnect. If this amount of time passes without reconnecting, the client will be kicked from the room. (default 0ms). If it set to be non-zero, then you should override `Room.onDisconnect(client)` and `Room.onReconnect(client)` to react to disconnects and reconnects.
 
 ### Room.hasClient(client)
 - `client` {Client}
@@ -45,12 +25,7 @@ Returns the `client` with the clients SID equal to `sid`.
 
 ### Room.join(userInfo)
 - `userInfo` {Object}
-Attempts to create a new `Client` object.
-
-### Hook: Room.onJoinRequest(client, userInfo)
-- `client` {Client}
-- `useInfo` {Object} same object given to `Room.join`
-Return true if permission granted to join, false otherwise. If not overidden, permission is always granted. Do not call super when using this hook.
+Attempts to create a new `Client` object. Either a property `sid` (a session ID string) or a property `cookie` must be set. If `cookie` is set, this must be a valid cookie string from which the session ID can be extracted, and `sidHeader` must have been set in `initialize(options)`.
 
 ### Room.leave(client)
 - `client` {Client}
@@ -59,22 +34,48 @@ Forces the `client` to leave. This will trigger `Room.onClientLeave(client)` to 
 ### Room.kickAll()
 Convenience method to force all clients in room to leave, calling `Room.leave(client)` on each client.
 
-### broadcast(event, payload)
+### Room.broadcast(event, payload)
 - `event` {String}
 - `payload` {Object, String, Boolean, Array, Number} (optional)
 Broadcasts `event` with optional `payload` to every connected and initialized client in the room.
 
-### emit(client, event, payload)
+### Room.emit(client, event, payload)
 - `client` {Client}
 - `event` {String}
 - `payload` {Object, String, Boolean, Array, Number} (optional)
 Emits `event` to `client` with optional `payload`.
 
-### addListener(client, event, listener)
+### Room.addListener(client, event, listener)
 - `client` {Client}
 - `event` {String}
 - `listener` {Function}
 Adds the event listener `listener` to client `client` for event `event`.
+
+### Hook: Room.onJoinRequest(client, userInfo)
+- `client` {Client}
+- `useInfo` {Object} same object given to `Room.join`
+Return true if permission granted to join, false otherwise. If not overidden, permission is always granted. Do not call super when using this hook.
+
+### Hook: Room.onClientAccepted(client) 
+- `client` {Client}
+Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
+
+### Hook: Room.initClient(client)
+- `client` {Client}
+Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
+
+### Hook: Room.onClientLeave(client)
+- `client` {Client}
+When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
+
+### Hook: Room.onClientDisconnect(client)
+- `client` {Client}
+Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
+
+### Hook: Room.onClientReconnect(client)
+- `client` {Client}
+When client reconnects, after being disconnected. As above, you only need to override this if reconnectTimeout is non-zero.
+
 
 ## Class: Client
 This class represents a client. It holds information only about the client connection and device, and optionally the ID of the user it is for, but nothing else about the user. This class should never be used to create new clients, and you do not have access to the class itself, but only objects of the class via the overidden methods in `Room`. 
