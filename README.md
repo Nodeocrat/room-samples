@@ -14,6 +14,7 @@ This class represents a room of clients. This is intended to be extended.
 
 ### Room.hasClient(client)
 - `client` {Client}  
+
 Return true if `client` is in room, regardless of connection or initialization state.
 
 ### Room.isConnected(client)
