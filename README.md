@@ -1,5 +1,5 @@
 # SERVER
-This is the server-side package of the room package. Samples can be found [here].
+This is the server-side package of the room package. Samples can be found in this repository.
 
 Note: do not confuse Client (abstraction for connection info of each connected client, for the backend) with CLIENT (front-end).
 
