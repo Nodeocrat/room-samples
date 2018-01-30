@@ -7,7 +7,7 @@ Note: do not confuse Client (abstraction for connection info of each connected c
 
 This class represents a room of clients. This is intended to be extended.
 
-### new Room(options)
+### new Room([options])
 - `options` {Object}
   - `initTimeout` {Number} Milliseconds for client to notify initialization is complete (via `initialized()` on client) before being kicked. Defaults to 10 seconds. If 0 is passed, then initClient will be called straight away and will not wait for the client to invoke `initialized()`. This is faster and useful for if there is no initial data that needs to be sent to the client.
   - `reconnectTimeout` {String} Time in milliseconds that clients have to reconnect upon disconnect. If this amount of time passes without reconnecting, the client will be kicked from the room. (default 0ms). If it set to be non-zero, then you should override `Room.onDisconnect(client)` and `Room.onReconnect(client)` to react to disconnects and reconnects.
@@ -35,13 +35,13 @@ Forces the `client` to leave. This will trigger `Room.onClientLeave(client)` to 
 ### Room.kickAll()
 Convenience method to force all clients in room to leave, calling `Room.leave(client)` on each client.
 
-### Room.broadcast(event, payload)
+### Room.broadcast(event[, payload])
 - `event` {String}  
 - `payload` {Object, String, Boolean, Array, Number} (optional)  
 
 Broadcasts `event` with optional `payload` to every connected and initialized client in the room.
 
-### Room.emit(client, event, payload)
+### Room.emit(client, event[, payload])
 - `client` {Client}  
 - `event` {String}  
 - `payload` {Object, String, Boolean, Array, Number} (optional)  
@@ -125,8 +125,31 @@ Causes client to leave all rooms it is currently in.
 Created a new ClientRoom object, which is designed to be the client-side counterpart of the Server-side Room class.
 
 ### ClientRoom.id
+Returns the ID of the room.
 
+### ClientRoom.on(event, listener)
+- `event` {String} An event fired from the corresponding server-side Room.
+- `listener` {Function} Event listener
 
+Registers `listener` with `event`.
+
+### join(url)
+- `url` {String} The url of the room you wish to join.
+
+Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this.
+
+### initialized()
+Call this to notify the server you have fully initialized, with all relevant event listeners and anything else set up. This must be called after the `ClientRoom.join(url)` Promise has resolved with `{success: true}`.
+
+### emit(event[, payload])
+- event {String}
+- payload {Object, String, Boolean, Array, Number} (optional)
+
+Emits `event` with `payload` to corresponding room on server.
+
+### leave()
+
+Causes the client to leave the room.
 
 Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user
 - CLIENT_INITIALIZED
