@@ -151,9 +151,9 @@ Emits `event` with `payload` to corresponding room on server.
 
 Causes the client to leave the room.
 
+
+
 Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user
-- CLIENT_INITIALIZED
-- EXIT
 - disconnect
 - reconnect
 - connect
