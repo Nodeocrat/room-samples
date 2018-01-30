@@ -19,18 +19,22 @@ Return true if `client` is in room, regardless of connection or initialization s
 
 ### Room.isConnected(client)
 - `client` {Client}  
+
 Returns true if `client` is connected
 
 ### Room.getClientBySid(sid)
 - `sid` {String} a string representing a session ID of a client.  
+
 Returns the `client` with the clients SID equal to `sid`.
 
 ### Room.join(userInfo)
 - `userInfo` {Object}  
+
 Attempts to create a new `Client` object. Either a property `sid` (a session ID string) or a property `cookie` must be set. If `cookie` is set, this must be a valid cookie string from which the session ID can be extracted, and `sidHeader` must have been set in `initialize(options)`.
 
 ### Room.leave(client)
 - `client` {Client}  
+
 Forces the `client` to leave. This will trigger `Room.onClientLeave(client)` to be called.
 
 ### Room.kickAll()
@@ -39,43 +43,52 @@ Convenience method to force all clients in room to leave, calling `Room.leave(cl
 ### Room.broadcast(event, payload)
 - `event` {String}  
 - `payload` {Object, String, Boolean, Array, Number} (optional)  
+
 Broadcasts `event` with optional `payload` to every connected and initialized client in the room.
 
 ### Room.emit(client, event, payload)
 - `client` {Client}  
 - `event` {String}  
 - `payload` {Object, String, Boolean, Array, Number} (optional)  
+
 Emits `event` to `client` with optional `payload`.
 
 ### Room.addListener(client, event, listener)
 - `client` {Client}  
 - `event` {String}  
 - `listener` {Function}  
+
 Adds the event listener `listener` to client `client` for event `event`.
 
 ### Hook: Room.onJoinRequest(client, userInfo)
 - `client` {Client}  
-- `useInfo` {Object} same object given to `Room.join`  
+- `useInfo` {Object} same object given to `Room.join`
+
 Return true if permission granted to join, false otherwise. If not overidden, permission is always granted. Do not call super when using this hook.
 
 ### Hook: Room.onClientAccepted(client) 
 - `client` {Client}  
+
 Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
 
 ### Hook: Room.initClient(client)
 - `client` {Client}  
+
 Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
 
 ### Hook: Room.onClientLeave(client)
 - `client` {Client}  
+
 When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
 
 ### Hook: Room.onClientDisconnect(client)
 - `client` {Client}  
+
 Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
 
 ### Hook: Room.onClientReconnect(client)
 - `client` {Client}  
+
 When client reconnects, after being disconnected. As above, you only need to override this if reconnectTimeout is non-zero.
 
 
@@ -96,6 +109,7 @@ Returns an ES6 Map of Room.id -> Room.
 
 ### Client.in(room)
 - `room` {Room}  
+
 Returns `true` if client is in `room`, otherwise returns `false`.
 
 ### Client.leaveAllRooms()
