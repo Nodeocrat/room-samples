@@ -117,8 +117,20 @@ Causes client to leave all rooms it is currently in.
 
 
 # CLIENT
+[DESCRIPTION]
+
+## Class: ClientRoom
+
+### new ClientRoom()
+Created a new ClientRoom object, which is designed to be the client-side counterpart of the Server-side Room class.
+
+### ClientRoom.id
 
 
 
-
-Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user.
+Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user
+- CLIENT_INITIALIZED
+- EXIT
+- disconnect
+- reconnect
+- connect
