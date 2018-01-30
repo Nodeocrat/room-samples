@@ -4,7 +4,7 @@ Note: do not confuse Client (abstraction for connection info of each connected c
 
 ## Class: Room
 
-This class represents a room of clients. This is intended to be extended from.
+This class represents a room of clients. This is intended to be extended.
 
 ### new Room(options)
 - `options` {Object}
