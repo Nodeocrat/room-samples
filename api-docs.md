@@ -63,7 +63,7 @@ Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and 
 ### Hook: Room.onJoinRequest(client, userInfo)
 - `client` {Client}  
 - `useInfo` {Object} same object given to `Room.join`
-.
+
 Return `{success: true}` if you want the user with `userInfo` to join. If not overidden, permission is always granted to join. Do not call super when using this hook. If `true` is returned, the `Room.onClientAccepted` hook below, will be triggered. Return an optional `reason` property if you wish to specify a reason why the user has not been accepted (with `success: false`)
 
 ### Hook: Room.onClientAccepted(client) 
