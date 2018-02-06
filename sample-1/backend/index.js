@@ -1,41 +1,77 @@
 const express = require('express');
 const http = require('http');
 const Room = require('server-room');
-const PORT = 8080;
-const SID = 'sid';
-const IP_HEADER = 'x-real-ip';
+const PORT = 3001;
+const SID = 'connect.sid';
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
-class TestRoom extends Room {
+/*
+*  Initial app setup
+*/
+const app = express();
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false
+  }
+}));
+app.use(express.static('../client'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
+/*
+*  Room declaration/setup
+*/
+class ChatRoom extends Room {
+  constructor(){
+    super();
+    this._users = new Map();
+  }
+
   initClient(client){
-    super.initClient(client);
+    super.initClient(client); // Must always call super for this hook
+
+    if(!client.id)
+      this.leave(client);
+
+    this._users.set(client.id, {username: client.id});
+
     this.addListener(client, 'SEND_MSG', msg => {
-      console.log(`received user message: ${msg}`);
-      this.broadcast('USER_MSG', msg);
+      this.broadcast('USER_MSG', {username: client.id, text: msg});
     });
-    console.log(`TestRoom::_initClient: Client ${client.id} initialized`);
-    this.broadcast('USER_JOINED', client.id);
+    this.broadcast('USER_JOINED', this._users.get(client.id));
+    this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
   }
 
   onClientLeave(client){
-    super.onClientLeave(client);
-    this.broadcast('USER_LEFT', client.id);
+    super.onClientLeave(client); // Must always call super for this hook
+
+    this._users.delete(client.id);
+    this.broadcast('USER_LEFT', {username: client.id});
   }
 }
 
-// Rooms
-const testRoom = new TestRoom();
+const chatRoom = new ChatRoom();
 
-//Server setup
-const app = express();
-app.post('/testroom', (req, res) => {
-  const result = testRoom.join({cookie: req.headers.cookie});
-  result.url = '/api/';
-  res.json(Object.assign({}, result));
+
+/*
+*  API
+*/
+app.post('/chatroom', (req, res) => {
+  const result = chatRoom.join({cookie: req.headers.cookie, id: req.body.username});
+  res.json(result);
 });
 
-const server = http.createServer(app);
-Room.initialize(server, {sidHeader: SID, ipHeader: IP_HEADER});
 
+/*
+*  Finish setup & start http/websocket server
+*/
+const server = http.createServer(app);
+Room.initialize(server, {sidHeader: SID});
 server.listen(PORT, err => {
   if(err)
     return console.log(`Error: ${err}`);
