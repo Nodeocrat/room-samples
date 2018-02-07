@@ -82,14 +82,11 @@
   min-width: 100px;
 }
 .playerListItem {
-  padding: 5px;
-  display: flex;
-}
-.playerListName {
   margin-left: 8px;
   margin-top: 5px;
   color: white;
   font-weight: bold;
+  padding: 5px;
 }
 
 

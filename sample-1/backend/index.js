@@ -11,11 +11,11 @@ const bodyParser = require('body-parser');
 */
 const app = express();
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'secret',
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: false
+    secure: false // must pass this option if not using tls
   }
 }));
 app.use(express.static('../client'));

@@ -43,10 +43,12 @@ function login(){
       chatRoom.on('USER_JOINED', user => {
         userList.set(user.username, user);
         renderUserList();
+        newMessage(`${user.username} joined`);
       });
       chatRoom.on('USER_LEFT', user => {
         userList.delete(user.username);
         renderUserList();
+        newMessage(`${user.username} left`);
       });
       chatRoom.on('USER_MSG', msg => newMessage(msg));
 
@@ -69,15 +71,19 @@ function login(){
 */
 function newMessage(msg){
   // If we are already scrolled to the bottom, then auto scroll so we dont have to
-  // manually scroll to see new messages. Otherwise dont auto scroll to bottom
+  // manually scroll to see new messages. Otherwise leave the scroller where it is.
   const autoScroll =
     messageContainer.scrollTop === messageContainer.scrollHeight - messageContainer.clientHeight ?
     true : false;
 
   const newMsg = document.createElement('div');
   newMsg.classList.add('message');
-  newMsg.innerHTML = `<span class="messageUsername">${msg.username}</span>
-    <div>${msg.text}</div>`;
+  if(msg.username){
+    newMsg.innerHTML = `<span class="messageUsername">${msg.username}</span>
+      <div>${msg.text}</div>`;
+  } else {
+    newMsg.innerHTML = `<div><i>${msg}</i></div>`;
+  }
   messageContainer.appendChild(newMsg);
 
   if(autoScroll)
@@ -86,13 +92,8 @@ function newMessage(msg){
 
 function renderUserList(){
   userListEle.innerHTML = '';
-  for(let [username] of userList){
-    userListEle.innerHTML += `
-      <div class="playerListItem">
-        <span class="playerListName">${username}</span>
-      </div>
-      `;
-  }
+  for(let [username] of userList)
+    userListEle.innerHTML += `<div class="playerListItem">${username}</div>`;
 }
 
 function leave(){
