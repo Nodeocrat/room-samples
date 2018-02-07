@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>room sample 1</title>
+</head>
+
+<body>
+
+  <link rel="stylesheet" type="text/css" href="/index.css">
+
+  <main id="root">
+    <div id="login">
+      <input type="text" id="username-input"/>
+      <button id="login-btn">Login</button>
+    </div>
+    <div id="chat-app" class="hide">
+      <div class="chat-app flexContainer">
+
+        <div class="outputInputContainer">
+          <div id="message-container" class="output scrollbar-dark">
+          </div>
+          <span class="sendForm">
+            <input type="text" class="input" id="text-input"/>
+            <button id="send-btn" class="btn btn-bordered btn-blue">Send</button>
+          </span>
+        </div>
+
+        <div id="user-list" class="userList scrollbar-dark">
+        </div>
+
+      </div>
+      <button id="leave-btn" class="btn btn-bordered">Leave</button>
+    </div>
+  </main>
+
+  <script type="module" src="/index.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+<!----------------------------------------------------------------------------->
