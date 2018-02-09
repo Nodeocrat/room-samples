@@ -9,10 +9,16 @@
   display: none;
 }
 
-.chat-room-wrapper {
+.chat-room-root {
   height: 500px;
   width: 600px;
   background-color: #36393e;
+}
+
+.wrapper {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
 }
 
 
@@ -32,6 +38,13 @@
 .flexContainer {
   display: flex;
   flex: 1;
+}
+
+.center {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
 
 .outputInputContainer {
@@ -74,12 +87,17 @@
   color: white;
 }
 
-.user-list {
-  white-space: nowrap;
-  padding: 20px;
+.user-list-wrapper {
   background-color: #2f3136;
   flex: 1;
   min-width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+.user-list {
+  flex: 1;
+  white-space: nowrap;
+  padding: 20px;
 }
 .playerListItem {
   margin-left: 8px;
@@ -123,6 +141,9 @@
   color: #499456;
 }
 
+.leave-btn {
+  margin: 3px;
+}
 
 /* Scrollbar */
 .scrollbar-dark{

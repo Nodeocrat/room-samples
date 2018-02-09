@@ -12,14 +12,26 @@ export default class ChatRoom {
     if(isNaN(channel) || (channel < 0 || channel > 3))
       throw `Channel must be a number between 0 and 3 but got: ${channel}`;
 
-    const wrapper = document.createElement('div');
+    const root = document.createElement('div');
+    const wrapper = document.createElement('span');
+    wrapper.classList.add('wrapper');
+    wrapper.appendChild(root);
     document.getElementById('chat-app').appendChild(wrapper);
-    wrapper.classList.add('chat-room-wrapper');
-    this.root = wrapper;
+    root.classList.add('chat-room-root');
+    root.classList.add('flexContainer');
+    this.root = root;
     this.room = new ClientRoom({url: `/chatroom/${channel}`});
 
     this.userList = new Map();
     this.renderJoinBtn();
+
+    this.leave = this.leave.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+    this.join = this.join.bind(this);
+    this.renderJoinBtn = this.renderJoinBtn.bind(this);
+    this.newMessage = this.newMessage.bind(this);
+    this.renderChatRoom = this.renderChatRoom.bind(this);
+    this.renderUserList = this.renderUserList.bind(this);
 
   }
 
@@ -63,21 +75,22 @@ export default class ChatRoom {
     while (this.root && this.root.firstChild)
       this.root.removeChild(this.root.firstChild);
 
-    const self = this;
+    const btnContainer = document.createElement('div');
+    btnContainer.classList.add('center');
     const joinBtn = document.createElement('button');
+    joinBtn.setAttribute('class', 'btn btn-green btn-bordered');
     joinBtn.innerHTML = 'Join Room';
-    joinBtn.addEventListener('click', () => self.join());
-    this.root.appendChild(joinBtn);
+    joinBtn.addEventListener('click', () => this.join());
+    btnContainer.appendChild(joinBtn);
+    this.root.appendChild(btnContainer);
   }
 
   renderChatRoom(){
-    while (this.root.firstChild)
+    while (this.root && this.root.firstChild)
       this.root.removeChild(this.root.firstChild);
 
     const markup = document.getElementById('chat-room-template').content;
-    this.root.appendChild(markup);
-
-    return;
+    this.root.appendChild(markup.cloneNode(true));
 
     //Save references for elements which need to be used elsewhere
     this.textInput = this.root.querySelector('.text-input');

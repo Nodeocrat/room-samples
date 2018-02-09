@@ -10,24 +10,19 @@
   <link rel="stylesheet" type="text/css" href="/index.css">
 
   <template id="chat-room-template">
-    <div class="chat-room-wrapper flexContainer">
-
       <div class="outputInputContainer">
-        <div class="message-container output scrollbar-dark">
-        </div>
+        <div class="message-container output scrollbar-dark"></div>
         <span class="sendForm">
           <input type="text" class="input text-input"/>
           <button class="send-btn btn btn-bordered btn-blue">Send</button>
         </span>
       </div>
 
-      <div class="user-list scrollbar-dark">
+      <div class="user-list-wrapper scrollbar-dark">
+        <div class="user-list scrollbar-dark"></div>
+        <button class="leave-btn btn btn-bordered">Leave</button>
       </div>
-
-    </div>
-    <button class="leave-btn btn btn-bordered">Leave</button>
   </template>
-
 
   <main id="root">
     <div id="login">
@@ -35,7 +30,7 @@
       <button id="login-btn">Login</button>
     </div>
     <div id="chat-app" class="hide">
-      <button id="logout-btn" class="btn btn-bordered">Logout</button>
+      <div><button id="logout-btn" class="btn btn-bordered">Logout</button></div>
     </div>
   </main>
 
