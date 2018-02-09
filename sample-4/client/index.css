@@ -1,0 +1,144 @@
+* { /*Some defaults I always use*/
+  box-sizing: border-box;
+  font-family: Source Sans Pro,Helvetica,Arial,sans-serif,Hiragino Kaku Gothic Pro,Meiryo,Hiragino Sans GB W3,Droid Sans Fallback,-apple-system,'.SFNSDisplay-Regular';
+  line-height: 20px;
+  font-size: 15px;
+}
+
+.hide {
+  display: none;
+}
+
+.chat-room-wrapper {
+  height: 500px;
+  width: 600px;
+  background-color: #36393e;
+}
+
+
+/* Messages */
+.message {
+  padding: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.messageUsername {
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+}
+
+
+
+.flexContainer {
+  display: flex;
+  flex: 1;
+}
+
+.outputInputContainer {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  color: #cccccc;
+}
+
+.output {
+  display: inline-block;
+  word-break: break-word;
+  flex: 1;
+  border-bottom: 1px solid hsla(0,0%,100%,.06);
+}
+
+/* Input & send form */
+.sendForm {
+  display: flex;
+  width: calc(100% - 20px);
+
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+
+  border-color: hsla(0,0%,100%,.06);
+  background-color: hsla(0,0%,100%,.06);
+
+  margin: 10px;
+  padding: 5px;
+  padding-left: 10px;
+}
+.input {
+  border: none;
+  margin-right: 5px;
+  background-color: transparent;
+  outline-color: transparent;
+  width: 100%;
+  flex: 1;
+  color: white;
+}
+
+.user-list {
+  white-space: nowrap;
+  padding: 20px;
+  background-color: #2f3136;
+  flex: 1;
+  min-width: 100px;
+}
+.playerListItem {
+  margin-left: 8px;
+  margin-top: 5px;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+}
+
+
+/*button styles*/
+.btn {
+   display: inline-block;
+   text-align: center;
+   color: rgba(0,0,0,0.6);
+   background-color: #eeeeee;
+   padding: 3px 7px;
+   border-radius: 5px;
+   cursor: pointer;
+   transition: all 150ms ease-out;
+}
+.btn:focus, .btn:hover {
+  filter: brightness(113%);
+}
+
+.btn-bordered {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #aaaaaa;
+}
+
+.btn-blue {
+  background-color: LightBlue;
+  border-color: CornflowerBlue;
+  color: SteelBlue;
+}
+
+.btn-green {
+  background-color: #7fd485;
+  border-color: #499456;
+  color: #499456;
+}
+
+
+/* Scrollbar */
+.scrollbar-dark{
+	overflow: auto;
+}
+.srollbar-dark::-webkit-scrollbar-track
+{
+	background-color: rgb(75,75,75);
+}
+.scrollbar-dark::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #36393e;
+}
+.scrollbar-dark::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: rgb(120,120,120);
+}
