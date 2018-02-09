@@ -64,6 +64,7 @@ for(let i = 0; i < 4; ++i)
 */
 const namesInUse = new Map();
 
+// Simple auth-free login system, just to be able to set a session name
 app.post('/login', (req, res) => {
   const username = req.body.username;
   if(!username || (namesInUse.get(username) && namesInUse.get(username) !== req.sessionID))
@@ -79,6 +80,7 @@ app.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+//Same as before, but with a url parameter for the room we wish to join
 app.post('/chatroom/:roomId', (req, res) => {
   const roomId = req.params.roomId;
   if(!roomId)

@@ -12,19 +12,33 @@ export default class ChatRoom {
     if(isNaN(channel) || (channel < 0 || channel > 3))
       throw `Channel must be a number between 0 and 3 but got: ${channel}`;
 
-    const root = document.createElement('div');
+    //Wraps the root. A wrapper is necessary because the chat rooms look tidier
+    //as inline-blocked components, but the root must be specified as flex
     const wrapper = document.createElement('span');
     wrapper.classList.add('wrapper');
+
+    //Informs us which chat room it is. Contained in the wrapper, not the root.
+    const channelDiv = document.createElement('div');
+    channelDiv.innerHTML = `Chat Room ${channel + 1}`;
+    channelDiv.style = 'text-align: center;';
+
+    //The 'root' will be the node which this class has access to
+    const root = document.createElement('div');
+    root.setAttribute('class', 'chat-room-root flex-container');
+    this.root = root;
+
+    wrapper.appendChild(channelDiv);
     wrapper.appendChild(root);
     document.getElementById('chat-app').appendChild(wrapper);
-    root.classList.add('chat-room-root');
-    root.classList.add('flexContainer');
-    this.root = root;
-    this.room = new ClientRoom({url: `/chatroom/${channel}`});
 
+    //initialize instance variables
+    this.room = new ClientRoom({url: `/chatroom/${channel}`}); // It is possible to give the join URL in the constructor as well as specifying it in room.join(). The parameter passed to join() has a higher precedence.
     this.userList = new Map();
+
+    //The intiial view is just a 'join' button.
     this.renderJoinBtn();
 
+    //Bind all fn's else context is set incorrectly
     this.leave = this.leave.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.join = this.join.bind(this);
@@ -114,7 +128,7 @@ export default class ChatRoom {
     if(msg.username){
       newMsg.innerHTML = `<span class="messageUsername">${msg.username}</span>
         <div>${msg.text}</div>`;
-    } else {
+    } else { // it's a status notification
       newMsg.innerHTML = `<div><i>${msg}</i></div>`;
     }
     messageContainer.appendChild(newMsg);

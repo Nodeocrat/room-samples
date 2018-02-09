@@ -9,13 +9,16 @@ const logoutBtn = document.getElementById('logout-btn');
 
 
 /*
-*   Higher level app setup
+*   High level app setup
 */
 
 loginBtn.addEventListener('click', login);
 nameInput.addEventListener('keydown', e => e.keyCode === 13 ? login() : null);
 logoutBtn.addEventListener('click', logout);
 
+const chatRooms = [];
+for(let i = 0; i <= 3; ++i)
+  chatRooms.push(new ChatRoom(i));
 
 // No authentication necessary. Just set a username for this session.
 function login(){
@@ -29,6 +32,9 @@ function login(){
 }
 
 function logout(){
+  for(let chatRoom of chatRooms)
+    chatRoom.leave();
+
   fetch('/logout', {method: 'POST', credentials: 'include'})
     .then(() => {
       loginView.classList.remove('hide');
@@ -38,6 +44,3 @@ function logout(){
     })
     .catch(err => console.log(err));
 }
-
-for(let i = 0; i <= 3; ++i)
-  new ChatRoom(i);
