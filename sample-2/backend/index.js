@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 */
 class ChatRoom extends Room {
   constructor(){
-    super({reconnectTimeout: 10000});
+    super({reconnectTimeout: 15000});
     this._users = new Map();
   }
 

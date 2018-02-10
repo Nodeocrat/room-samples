@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 */
 class ChatRoom extends Room {
   constructor(){
-    super();
+    super({reconnectTimeout: 15000});
     this._users = new Map();
   }
 
@@ -38,13 +38,28 @@ class ChatRoom extends Room {
     if(!client.id)
       this.leave(client);
 
-    this._users.set(client.id, {username: client.id});
+    this._users.set(client.id, {username: client.id, status: 'ONLINE'});
 
     this.addListener(client, 'SEND_MSG', msg => {
       this.broadcast('USER_MSG', {username: client.id, text: msg});
     });
     this.broadcast('USER_JOINED', this._users.get(client.id));
-    this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
+    this.sendInitialData(client);
+  }
+
+  onClientDisconnect(client){
+    super.onClientDisconnect(client); // Must always call super for this hook
+    const user = this._users.get(client.id);
+    user.status = 'DISCONNECTED';
+    this.broadcast('USER_DISCONNECTED', user);
+  }
+
+  onClientReconnect(client){
+    super.onClientReconnect(client);
+    const user = this._users.get(client.id);
+    user.status = 'ONLINE';
+    this.broadcast('USER_RECONNECTED', user, {exclude: new Set([client.sid])});
+    this.sendInitialData(client);
   }
 
   onClientLeave(client){
@@ -52,6 +67,10 @@ class ChatRoom extends Room {
 
     this._users.delete(client.id);
     this.broadcast('USER_LEFT', {username: client.id});
+  }
+
+  sendInitialData(client){
+    this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
   }
 }
 

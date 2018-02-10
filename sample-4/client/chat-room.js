@@ -70,6 +70,16 @@ export default class ChatRoom {
           this.renderUserList();
           this.newMessage(`${user.username} left`);
         });
+        room.on('USER_DISCONNECTED', user => {
+          this.userList.set(user.username, user);
+          this.renderUserList();
+          this.newMessage(`${user.username} disconnected`);
+        });
+        room.on('USER_RECONNECTED', user => {
+          this.userList.set(user.username, user);
+          this.renderUserList();
+          this.newMessage(`${user.username} reconnected`);
+        });
         room.on('USER_MSG', msg => this.newMessage(msg));
 
         // Change view
@@ -141,8 +151,10 @@ export default class ChatRoom {
     const userListEle = this.root.querySelector('.user-list');
 
     userListEle.innerHTML = '';
-    for(let [username] of this.userList)
-      userListEle.innerHTML += `<div class="playerListItem">${username}</div>`;
+    for(let [username, user] of this.userList){
+      const statusClass = user.status === 'ONLINE' ? 'online' : 'disconnected';
+      userListEle.innerHTML += `<div class="playerListItem ${statusClass}">${username}</div>`;
+    }
   }
 
   leave(){
