@@ -1,4 +1,4 @@
-# SERVER
+# SERVER SIDE MODULE
 This is the server-side package of the room package. Samples can be found in this repository.
 
 Note: do not confuse Client (abstraction for connection info of each connected client, for the backend) with CLIENT (front-end).
@@ -116,7 +116,7 @@ Returns `true` if client is in `room`, otherwise returns `false`.
 Causes client to leave all rooms it is currently in.
 
 
-# CLIENT
+# CLIENT SIDE MODULE
 
 ## Class: ClientRoom
 Class representing a client side Room for a corresponding back-end Room.
