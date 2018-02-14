@@ -5,18 +5,45 @@
   font-size: 15px;
 }
 
+/*structural/fundamental styles*/
 .hide {
   display: none;
 }
-
-.chat-app {
+.chat-room-root {
   height: 500px;
   width: 600px;
   background-color: #36393e;
 }
+.wrapper {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+}
+.flex-container {
+  display: flex;
+  flex: 1;
+}
+.center {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
 
 
-/* Messages */
+/*Styles for the messages view*/
+.outputInputContainer {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  color: #cccccc;
+}
+.output {
+  display: inline-block;
+  word-break: break-word;
+  flex: 1;
+  border-bottom: 1px solid hsla(0,0%,100%,.06);
+}
 .message {
   padding: 15px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -25,27 +52,6 @@
   font-weight: bold;
   color: white;
   white-space: nowrap;
-}
-
-
-
-.flexContainer {
-  display: flex;
-  flex: 1;
-}
-
-.outputInputContainer {
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  color: #cccccc;
-}
-
-.output {
-  display: inline-block;
-  word-break: break-word;
-  flex: 1;
-  border-bottom: 1px solid hsla(0,0%,100%,.06);
 }
 
 /* Input & send form */
@@ -74,12 +80,19 @@
   color: white;
 }
 
-.userList {
-  white-space: nowrap;
-  padding: 20px;
+
+/*User list styles*/
+.user-list-wrapper {
   background-color: #2f3136;
   flex: 1;
   min-width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+.user-list {
+  flex: 1;
+  white-space: nowrap;
+  padding: 20px;
 }
 .playerListItem {
   margin-left: 8px;
@@ -87,6 +100,12 @@
   color: white;
   font-weight: bold;
   padding: 5px;
+}
+.online {
+  color: white;
+}
+.disconnected {
+  color: rgba(255,255,255,0.5);
 }
 
 
@@ -123,6 +142,9 @@
   color: #499456;
 }
 
+.leave-btn {
+  margin: 8px;
+}
 
 /* Scrollbar */
 .scrollbar-dark{

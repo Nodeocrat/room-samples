@@ -38,13 +38,13 @@ class ChatRoom extends Room {
     if(!client.id)
       this.leave(client);
 
-    this._users.set(client.id, {username: client.id});
+    this._users.set(client.id, {username: client.id, status: 'ONLINE'});
 
     this.addListener(client, 'SEND_MSG', msg => {
       this.broadcast('USER_MSG', {username: client.id, text: msg});
     });
     this.broadcast('USER_JOINED', this._users.get(client.id));
-    this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
+    this.sendInitialData(client);
   }
 
   onClientLeave(client){
@@ -53,16 +53,46 @@ class ChatRoom extends Room {
     this._users.delete(client.id);
     this.broadcast('USER_LEFT', {username: client.id});
   }
+
+  sendInitialData(client){
+    this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
+  }
 }
 
-const chatRoom = new ChatRoom();
-
+const chatRooms = [];
+for(let i = 0; i < 4; ++i)
+  chatRooms.push(new ChatRoom());
 
 /*
 *  API
 */
-app.post('/chatroom', (req, res) => {
-  const result = chatRoom.join({cookie: req.headers.cookie, id: req.body.username});
+const namesInUse = new Map();
+
+// Simple auth-free login system, just to be able to set a session name
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  if(!username || (namesInUse.get(username) && namesInUse.get(username) !== req.sessionID))
+    return res.sendStatus(400);
+  req.session.username = username;
+  namesInUse.set(username, req.sessionID);
+  res.sendStatus(200);
+});
+
+app.post('/logout', (req, res) => {
+  namesInUse.delete(req.session.username);
+  req.session.username = null;
+  res.sendStatus(200);
+});
+
+//Same as before, but with a url parameter for the room we wish to join
+app.post('/chatroom/:roomId', (req, res) => {
+  const roomId = req.params.roomId;
+  if(!roomId)
+    return res.json({success:false, reason:'Room Id not provided'});
+  if(!req.session.username)
+    return res.json({success: false, reason:'Username not provided'});
+
+  const result = chatRooms[roomId].join({cookie: req.headers.cookie, id: req.session.username});
   res.json(result);
 });
 
