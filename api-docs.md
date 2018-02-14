@@ -58,7 +58,7 @@ Adds the event listener `listener` to client `client` for event `event`.
 ### Room.join(userInfo)
 - `userInfo` {Object} Contains info about the user wishing to join. Either a property `sid` (a session ID string) or a property `cookie` must be set. If `cookie` is set, this must be a valid cookie string from which the session ID can be extracted, and `sidHeader` must have been set in `initialize(options)`.
 
-Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and `onClientAccepted(client)` (if `onJoinRequest` returns true) before returning. Returns an object: `{success: {Boolean}, reason: {String} }`. success will be `true` if onJoinRequest returned `true` and the SID given is not already found to be in the room. Otherwise returns success: `false` with a `reason` property set, 
+Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and `onClientAccepted(client)` (if `onJoinRequest` returns true) before returning. Returns an object: `{success: {Boolean}, reason: {String} }`. success will be `true` if onJoinRequest returned `true` and the SID given is not already found to be in the room. Otherwise returns success: `false` with a `reason` property set. Including an optional 'id' property will set the resulting Client objects id to this. Otherwise the clients id property will return the session ID it represents.
 
 ### Hook: Room.onJoinRequest(client, userInfo)
 - `client` {Client}  
@@ -102,7 +102,7 @@ Returns the SID string which the client represents. Clients objects and SID stri
 Returns the id string which is the same as the id string passed in in join()'s `userInfo` argument `id` property. The ID can represent whatever you want, but in most typical cases will represent the ID of a user account which can, if you allow in the subclass, have multiple clients representing it (across different sessions).
 
 ### Client.ip
-Returns the ip string of the client.
+Returns the ip string of the client. This will be set automatically if you have provided a ipHeader property for the header which represents the header, otherwise the Room module will try to work it out itself (rarely works if using proxies).
 
 ### Client.rooms
 Returns an ES6 Map of Room.id -> Room.
@@ -117,9 +117,9 @@ Causes client to leave all rooms it is currently in.
 
 
 # CLIENT
-[DESCRIPTION]
 
 ## Class: ClientRoom
+Class representing a client side Room for a corresponding back-end Room.
 
 ### new ClientRoom()
 Created a new ClientRoom object, which is designed to be the client-side counterpart of the Server-side Room class.
@@ -127,10 +127,11 @@ Created a new ClientRoom object, which is designed to be the client-side counter
 ### ClientRoom.id
 Returns the ID of the room.
 
-### ClientRoom.join(url)
+### ClientRoom.join(url[, payload])
 - `url` {String} The url of the room you wish to join.
+- `payload` {Object, String, Boolean, Array, Number} (optional) 
 
-Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this.
+Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this. If the join request fails, the `Promise` will throw an error string representing the reason of the failure.
 
 ### ClientRoom.on(event, listener)
 - `event` {String} An event fired from the corresponding server-side Room.
