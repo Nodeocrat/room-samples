@@ -128,8 +128,8 @@ Created a new ClientRoom object, which is designed to be the client-side counter
 Returns the ID of the room.
 
 ### ClientRoom.join(url[, payload])
-- `url` {String} The url of the room you wish to join.
-- `payload` {Object, String, Boolean, Array, Number} (optional) 
+- `url` {String} The url of the room you wish to join
+- `payload` {Object, String, Boolean, Array, Number} (optional) The post body
 
 Sends a POST request to the server to request joining the room. Returns a `Promise` which resolves with a `response` from the server: `{success: {Boolean}, reason: {String} }` where success is `true` if you have successfully joined the room, and  `false` otherwise, with the `reason` of the failure. The response of the POST request on the server-side must be sent back as JSON to satisfy this. If the join request fails, the `Promise` will throw an error string representing the reason of the failure.
 
