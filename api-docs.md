@@ -60,8 +60,7 @@ Adds the event listener `listener` to client `client` for event `event`.
 
 Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and `onClientAccepted(client)` (if `onJoinRequest` returns true) before returning. Returns an object: `{success: {Boolean}, reason: {String} }`. success will be `true` if onJoinRequest returned `true` and the SID given is not already found to be in the room. Otherwise returns success: `false` with a `reason` property set. Including an optional 'id' property will set the resulting Client objects id to this. Otherwise the clients id property will return the session ID it represents.
 
-### Hook: Room.onJoinRequest(client, userInfo)
-- `client` {Client}  
+### Hook: Room.onJoinRequest(userInfo)
 - `useInfo` {Object} same object given to `Room.join`
 
 Return `{success: true}` if you want the user with `userInfo` to join. If not overidden, permission is always granted to join. Do not call super when using this hook. If `true` is returned, the `Room.onClientAccepted` hook below, will be triggered. Return an optional `reason` property if you wish to specify a reason why the user has not been accepted (with `success: false`)
