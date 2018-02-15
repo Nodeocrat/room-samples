@@ -1,5 +1,5 @@
 # SERVER SIDE MODULE
-This is the server-side module of the room package. Samples can be found in this repository.
+This is the server-side module of the room package.
 
 Note: do not confuse Client (abstraction for connection info of each connected client, for the backend) with CLIENT (front-end).
 
