@@ -12,8 +12,8 @@ export default class ChatRoom {
     if(isNaN(channel) || (channel < 0 || channel > 3))
       throw `Channel must be a number between 0 and 3 but got: ${channel}`;
 
-    //Wraps the root. A wrapper is necessary because the chat rooms look tidier
-    //as inline-blocked components, but the root must be specified as flex
+    //Wraps the root. A wrapper is necessary because the chat rooms look tidier as inline-blocked components,
+    //but the root must be specified as flex since flexbox model is used for the chat room UI
     const wrapper = document.createElement('span');
     wrapper.classList.add('wrapper');
 
