@@ -3,10 +3,13 @@ This is the server-side module of the room package.
 
 Note: do not confuse Client (abstraction for connection info of each connected client, for the backend) with CLIENT (front-end).
 
-### initialize([options])
+### initialize(server, [options])
+- `server` {Object}
 - `options` {Object}
+  - `sidHeader` {String} the cookie string name for the session ID (defaults to 'sid')
+  - `ipHeader` {String} the header name for the IP address of the client.
 
-```code```
+To start the Room websocket server, you must call `Room.initialize(server, {sidHeader: SID});` (where `Room` is the imported module). The ipHeader is optional, but if you include it, an ip address will be included  in the userInfo parameter passed to Room.onJoinRequest and Room.onClientAccepted, as well as it being inlucded in logging output where relevant. If `ipHeader` is not included, the Room pakcage will try to guess it, which usually works if you are not using a proxy, but if you are, rarely works.
 
 ## Class: Room
 
@@ -70,8 +73,9 @@ Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and 
 
 Return `{success: true}` if you want the user with `userInfo` to join. If not overidden, permission is always granted to join. Do not call super when using this hook. If `true` is returned, the `Room.onClientAccepted` hook below, will be triggered. Return an optional `reason` property if you wish to specify a reason why the user has not been accepted (with `success: false`)
 
-### Hook: Room.onClientAccepted(client) 
+### Hook: Room.onClientAccepted(client, userInfo) 
 - `client` {Client}  
+- `userInfo` {Object} the same object as in Room.onJoinRequest
 
 Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
 
