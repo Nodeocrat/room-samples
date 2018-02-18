@@ -3,6 +3,11 @@ This is the server-side module of the room package.
 
 Note: do not confuse Client (abstraction for connection info of each connected client, for the backend) with CLIENT (front-end).
 
+### initialize([options])
+- `options` {Object}
+
+```code```
+
 ## Class: Room
 
 This class represents a room of clients. This is intended to be extended.
