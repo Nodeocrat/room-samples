@@ -47,6 +47,16 @@ class ChatRoom extends Room {
     this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
   }
 
+  onJoinRequest(userInfo){ // Do not call super for this hook
+    if(!userInfo.id)
+      return {success: false, reason: 'Username cannot be empty'};
+
+    if(userInfo.id.length > 8)
+      return {success: false, reason: 'Username cannot be longer than 8 characters'};
+
+    return true; // You can also return a boolean, but if it's false, it's recommended to include a reason
+  }
+
   onClientLeave(client){
     super.onClientLeave(client); // Must always call super for this hook
 

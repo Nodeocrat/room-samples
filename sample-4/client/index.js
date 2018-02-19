@@ -43,7 +43,12 @@ function login(){
       chatRoom.on('USER_JOINED', user => {
         userList.set(user.username, user);
         renderUserList();
-        newMessage(`${user.username} joined`);
+        newMessage(`${user.username} joining...`);
+      });
+      chatRoom.on('USER_INITIALIZED', user => {
+        userList.set(user.username, user);
+        renderUserList();
+        newMessage(`${user.username} initialized`);
       });
       chatRoom.on('USER_LEFT', user => {
         userList.delete(user.username);
@@ -55,7 +60,8 @@ function login(){
       // Change view
       loginView.classList.add('hide');
       chatApp.classList.remove('hide');
-      chatRoom.initialized();
+
+      setTimeout(() => chatRoom.initialized(), 5000);
     })
     .catch(err => console.log(err));
 }
@@ -70,11 +76,6 @@ function login(){
 *   msg: {username: <String>, text: <String>}
 */
 function newMessage(msg){
-  // If we are already scrolled to the bottom, then auto scroll so we dont have to
-  // manually scroll to see new messages. Otherwise leave the scroller where it is.
-  const autoScroll =
-    messageContainer.scrollTop === messageContainer.scrollHeight - messageContainer.clientHeight ?
-    true : false;
 
   const newMsg = document.createElement('div');
   newMsg.classList.add('message');
@@ -86,14 +87,15 @@ function newMessage(msg){
   }
   messageContainer.appendChild(newMsg);
 
-  if(autoScroll)
-    messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+  messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
 }
 
 function renderUserList(){
   userListEle.innerHTML = '';
-  for(let [username] of userList)
-    userListEle.innerHTML += `<div class="playerListItem">${username}</div>`;
+  for(let [username, user] of userList){
+    const statusClass = user.status === 'ONLINE' ? 'online' : 'uninitialized';
+    userListEle.innerHTML += `<div class="playerListItem ${statusClass}">${username}</div>`;
+  }
 }
 
 function leave(){

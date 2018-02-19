@@ -127,12 +127,6 @@ export default class ChatRoom {
   newMessage(msg){
     const messageContainer = this.root.querySelector('.message-container');
 
-    // If we are already scrolled to the bottom, then auto scroll so we dont have to
-    // manually scroll to see new messages. Otherwise leave the scroller where it is.
-    const autoScroll =
-      messageContainer.scrollTop === messageContainer.scrollHeight - messageContainer.clientHeight ?
-      true : false;
-
     const newMsg = document.createElement('div');
     newMsg.classList.add('message');
     if(msg.username){
@@ -143,8 +137,7 @@ export default class ChatRoom {
     }
     messageContainer.appendChild(newMsg);
 
-    if(autoScroll)
-      messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+    messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
   }
 
   renderUserList(){

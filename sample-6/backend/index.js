@@ -47,6 +47,17 @@ class ChatRoom extends Room {
     this.sendInitialData(client);
   }
 
+  onJoinRequest(userInfo){ // Do not call super for this hook
+    if(!userInfo.id)
+      return {success: false, reason: 'Username cannot be empty'};
+
+    const client = userInfo.client;
+    if(client && client.rooms.size > 2)
+      return {success: false, reason: 'Cannot join more than 3 rooms'};
+
+    return true; // You can also return a boolean, but if it's false, it's recommended to include a reason
+  }
+
   onClientDisconnect(client){
     super.onClientDisconnect(client); // Must always call super for this hook
     const user = this._users.get(client.id);
@@ -106,6 +117,9 @@ app.post('/chatroom/:roomId', (req, res) => {
     return res.json({success:false, reason:'Room Id not provided'});
   if(!req.session.username)
     return res.json({success: false, reason:'Username not provided'});
+  if(isNaN(roomId) || (roomId < 0 || roomId > 3))
+    return res.json({success: false, reason: 'Invalid Room ID'});
+
 
   const result = chatRooms[roomId].join({cookie: req.headers.cookie, id: req.session.username});
   res.json(result);

@@ -91,6 +91,8 @@ app.post('/chatroom/:roomId', (req, res) => {
     return res.json({success:false, reason:'Room Id not provided'});
   if(!req.session.username)
     return res.json({success: false, reason:'Username not provided'});
+  if(isNaN(roomId) || (roomId < 0 || roomId > 3))
+    return res.json({success: false, reason: 'Invalid Room ID'});
 
   const result = chatRooms[roomId].join({cookie: req.headers.cookie, id: req.session.username});
   res.json(result);

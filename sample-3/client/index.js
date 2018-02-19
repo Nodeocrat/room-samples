@@ -70,11 +70,6 @@ function login(){
 *   msg: {username: <String>, text: <String>}
 */
 function newMessage(msg){
-  // If we are already scrolled to the bottom, then auto scroll so we dont have to
-  // manually scroll to see new messages. Otherwise leave the scroller where it is.
-  const autoScroll =
-    messageContainer.scrollTop === messageContainer.scrollHeight - messageContainer.clientHeight ?
-    true : false;
 
   const newMsg = document.createElement('div');
   newMsg.classList.add('message');
@@ -86,8 +81,7 @@ function newMessage(msg){
   }
   messageContainer.appendChild(newMsg);
 
-  if(autoScroll)
-    messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+  messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
 }
 
 function renderUserList(){

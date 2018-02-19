@@ -35,16 +35,29 @@ class ChatRoom extends Room {
   initClient(client){
     super.initClient(client); // Must always call super for this hook
 
-    if(!client.id)
-      this.leave(client);
+    const user = this._users.get(client.id);
+    if(!user)
+      return this.leave(client);
 
-    this._users.set(client.id, {username: client.id});
+    user.status = 'ONLINE';
 
     this.addListener(client, 'SEND_MSG', msg => {
       this.broadcast('USER_MSG', {username: client.id, text: msg});
     });
-    this.broadcast('USER_JOINED', this._users.get(client.id));
+
+    this.broadcast('USER_INITIALIZED', this._users.get(client.id));
     this.emit(client, 'INIT', [...this._users.values()]); // Convert to array of user objects since Map objects cannot be converted to JSON
+  }
+
+  onClientAccepted(client){
+    super.onClientAccepted(client); // Always call super for this hook
+
+    if(!client.id)
+      return console.log('Cannot create client with empty id');
+
+    const newUser = {username: client.id, status: 'INITIALIZING'};
+    this._users.set(client.id, newUser);
+    this.broadcast('USER_JOINED', newUser);
   }
 
   onClientLeave(client){
