@@ -82,7 +82,7 @@ Called when client is accepted & expected to join shortly, but not yet initializ
 ### Client Hook: Room.initClient(client)
 - `client` {Client}  
 
-Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
+Called when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
 
 ### Client Hook: Room.onClientLeave(client)
 - `client` {Client}  
