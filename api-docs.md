@@ -68,33 +68,33 @@ Adds the event listener `listener` to client `client` for event `event`.
 
 Triggers the join process, invoking `Room.onJoinRequest(client, userInfo)`, and `onClientAccepted(client)` (if `onJoinRequest` returns true) before returning. Returns an object: `{success: {Boolean}, reason: {String} }`. success will be `true` if onJoinRequest returned `true` and the SID given is not already found to be in the room. Otherwise returns success: `false` with a `reason` property set. Including an optional 'id' property will set the resulting Client objects id to this. Otherwise the clients id property will return the session ID it represents.
 
-### Hook: Room.onJoinRequest(userInfo)
+### Client Hook: Room.onJoinRequest(userInfo)
 - `useInfo` {Object} same object given to `Room.join`
 
 Return `{success: true}` if you want the user with `userInfo` to join. If not overidden, permission is always granted to join. Do not call super when using this hook. If `true` is returned, the `Room.onClientAccepted` hook below, will be triggered. Return an optional `reason` property if you wish to specify a reason why the user has not been accepted (with `success: false`)
 
-### Hook: Room.onClientAccepted(client, userInfo) 
+### Client Hook: Room.onClientAccepted(client, userInfo) 
 - `client` {Client}  
 - `userInfo` {Object} the same object as in Room.onJoinRequest
 
 Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
 
-### Hook: Room.initClient(client)
+### Client Hook: Room.initClient(client)
 - `client` {Client}  
 
 Hook for when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
 
-### Hook: Room.onClientLeave(client)
+### Client Hook: Room.onClientLeave(client)
 - `client` {Client}  
 
 When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
 
-### Hook: Room.onClientDisconnect(client)
+### Client Hook: Room.onClientDisconnect(client)
 - `client` {Client}  
 
 Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
 
-### Hook: Room.onClientReconnect(client)
+### Client Hook: Room.onClientReconnect(client)
 - `client` {Client}  
 
 When client reconnects, after being disconnected. As above, you only need to override this if reconnectTimeout is non-zero.
