@@ -151,8 +151,8 @@ Registers `listener` with `event`, which will be called when `event` is fired fr
 Call this to notify the server you have fully initialized, with all relevant event listeners and anything else set up. This must be called after the `ClientRoom.join(url)` Promise has resolved with `{success: true}`.
 
 ### ClientRoom.emit(event[, payload])
-- event {String}
-- payload {Object, String, Boolean, Array, Number} (optional)
+- `event` {String}
+- `payload` {Object, String, Boolean, Array, Number} (optional)
 
 Emits `event` with `payload` to corresponding room on server.
 
@@ -163,6 +163,6 @@ Causes the client to leave the room.
 
 
 Do not use these reserved events on either client or server, as they are used behind the scenes and may cause undesirable side effects for the user
-- disconnect
-- reconnect
-- connect
+- `disconnect`
+- `reconnect`
+- `connect`
