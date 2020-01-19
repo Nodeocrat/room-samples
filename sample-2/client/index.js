@@ -32,40 +32,49 @@ function sendMessage(){
 function login(){
   // Request join
   chatRoom = new ClientRoom();
+  //Socket events
+  chatRoom.on('INIT', users => {
+    // Change view
+    loginView.classList.add('hide');
+    chatApp.classList.remove('hide');
+    for(let user of users)
+      userList.set(user.username, user);
+    renderUserList();
+  });
+  chatRoom.on('USER_JOINED', user => {
+    userList.set(user.username, user);
+    newMessage(`${user.username}`);
+    renderUserList();
+  });
+  chatRoom.on('USER_LEFT', user => {
+    userList.delete(user.username);
+    newMessage(`${user.username} has left`);
+    renderUserList();
+  });
+  chatRoom.on('USER_DISCONNECTED', user => {
+    userList.set(user.username, user);
+    newMessage(`${user.username} disconnected`);
+    renderUserList();
+  });
+  chatRoom.on('USER_RECONNECTED', user => {
+    userList.set(user.username, user);
+    newMessage(`${user.username} reconnected`);
+    renderUserList();
+  });
+  chatRoom.on('USER_MSG', msg => newMessage(msg));
+
   chatRoom.join('/chatroom', {username: nameInput.value})
     .then(() => {
-      //Socket events
-      chatRoom.on('INIT', users => {
-        for(let user of users)
-          userList.set(user.username, user);
-        renderUserList();
-      });
-      chatRoom.on('USER_JOINED', user => {
-        userList.set(user.username, user);
-        newMessage(`${user.username}`);
-        renderUserList();
-      });
-      chatRoom.on('USER_LEFT', user => {
-        userList.delete(user.username);
-        newMessage(`${user.username} has left`);
-        renderUserList();
-      });
-      chatRoom.on('USER_DISCONNECTED', user => {
-        userList.set(user.username, user);
-        newMessage(`${user.username} disconnected`);
-        renderUserList();
-      });
-      chatRoom.on('USER_RECONNECTED', user => {
-        userList.set(user.username, user);
-        newMessage(`${user.username} reconnected`);
-        renderUserList();
-      });
-      chatRoom.on('USER_MSG', msg => newMessage(msg));
-
-      // Change view
-      loginView.classList.add('hide');
-      chatApp.classList.remove('hide');
-      chatRoom.initialized();
+      // Simulate loading of assets, etc, before notifying server we are initialized.
+      Promise.all([
+        new Promise(resolve => {
+          chatRoom.on('connect', resolve);
+        }),
+        new Promise(resolve => {
+          //Simulate fetching data, etc.
+          setTimeout(resolve, 2000);
+        })
+      ]).then(() => chatRoom.emit('CLIENT_INITIALIZED')); // Used with RoomWithInitialization
     })
     .catch(err => console.log(err));
 }

@@ -77,22 +77,22 @@ Return `{success: true}` if you want the user with `userInfo` to join. If not ov
 - `client` {Client}  
 - `userInfo` {Object} the same object as in Room.onJoinRequest
 
-Called when client is accepted & expected to join shortly, but not yet initialized. Always call super when using this hook.
+Called when client is accepted & is now guaranteed a spot in the room, but the websocket connection may not be up yet. Always call super when using this hook. You may register socket events here if you do not have to send initial state; it will save half a round trip compared to onClientConnect, if the client does not have an active websocket connection yet.
 
-### Client Hook: Room.initClient(client)
+### Client Hook: Room.onClientConnect(client)
 - `client` {Client}  
 
-Called when client is initialized on client side. This is the time to register socket events on server side with client. Also optionally you can choose to emit initial startup data (if required). Note: This is called after the client side has called `initialized()` so it can be assumed the client is already initialized and is receiving events whenever `Room.broadcast` is called.
+Called when client websocket connection is up. You should register socket events here if you need to send initial data.
 
 ### Client Hook: Room.onClientLeave(client)
 - `client` {Client}  
 
-When client leaves. Be aware that this may happen any time after onClientAccepted even before the client has initialized
+When client leaves. Be aware that this may happen any time after onClientAccepted, even before the client has an active websocket connection.
 
 ### Client Hook: Room.onClientDisconnect(client)
 - `client` {Client}  
 
-Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before)
+Called when a client disconnects. This does not need to be overidden if reconenctTimeout is set to zero, as leave will be called instantly (but onClientDisconnect will still be called just before).
 
 ### Client Hook: Room.onClientReconnect(client)
 - `client` {Client}  

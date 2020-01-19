@@ -23,17 +23,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+// Reconnect: Many secnario's:
+// ------------------------------
+// 1. Client: reconnecting, Server: Timed out
+// rejoin but no reinit. As far as the server is concerned, a full rejoin is necessary.
+// I may add an optimization later on which allows a parameter to be set, to bypass the
+// initialization. [this is an issue with both the old and the new version]. For now, the
+// burden is on the subclasses to communicate that client has just rejoined on server,
+// and must re-send the initialization.
+// 2. Client: refreshed, Server: Not timed out
+// no rejoin but need reinit most common case - client will call join() and be sent
+// back in via onClientReconnect(), but the subclass will need a way of knowing that
+// reinitialization is required... Just assume it is.
+// 3. Client: reconnecting, Server: Not timed out
+// no rejoin and no reinit. simplest case. onClientReconnect(). Reinitialization process
+// will be sent back to client (for now). After got this working, pass thhrough a param.
+
+
+// 3 will be the same as 2 for now. But later on, it will be improved and the
+// client_initialization will get bypassed.
+
+// 4. Client reconnect with new connection and is not present in server room
+// (a new join; dealt with already)
+
+
 /*
 *  Room declaration/setup
 */
-class ChatRoom extends Room {
+class ChatRoom extends Room.WithReadyCheck {
   constructor(){
     super({reconnectTimeout: 15000});
     this._users = new Map();
   }
 
-  initClient(client){
-    super.initClient(client); // Must always call super for this hook
+  onClientReady(client){
 
     if(!client.id)
       this.leave(client);
@@ -56,15 +79,21 @@ class ChatRoom extends Room {
     this.broadcast('USER_LEFT', {username: client.id});
   }
 
+  /**
+   * @warning
+   * This may be called before the client has initialized, so be sure to check for the existence of user.
+   */
   onClientDisconnect(client){
     super.onClientDisconnect(client); // Must always call super for this hook
     const user = this._users.get(client.id);
-    user.status = 'DISCONNECTED';
-    this.broadcast('USER_DISCONNECTED', user);
+    if (user) {
+      user.status = 'DISCONNECTED';
+      this.broadcast('USER_DISCONNECTED', user);
+    }
   }
 
-  onClientReconnect(client){
-    super.onClientReconnect(client);
+  onClientReconnectReady(client){
+    // Ask client to reconnect for now. Later: isInitialized param will come through.
     const user = this._users.get(client.id);
     user.status = 'ONLINE';
     this.broadcast('USER_RECONNECTED', user, {exclude: new Set([client.sid])});
